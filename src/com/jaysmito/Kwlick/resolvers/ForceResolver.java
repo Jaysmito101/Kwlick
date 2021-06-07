@@ -26,10 +26,13 @@ public class ForceResolver implements PhysicsResolver{
 		this.force.add(force);
 	}
 
+<<<<<<< HEAD
 	public void SetForce(Vector2 force){
 		this.force.x = force.x;
 		this.force.y = force.y;
 	}
+=======
+>>>>>>> 2b5bcef68b9d05979186709fae492fc69dd7345c
 	public void Halt(){
 		this.velocity.zero();
 	}
@@ -63,10 +66,17 @@ public class ForceResolver implements PhysicsResolver{
 
 	@Override
 	public void Resolve(Entity entity){
+<<<<<<< HEAD
 		ApplyDrag();
 		velocity.add(force.multiply((float)Kwlick.DeltaTime).multiply(1/mass));
 		if(isGravityActive)
 			velocity.add(new Vector2(0, g* Kwlick.DeltaTime)); // For gravity
+=======
+		if(isGravityActive)
+			AddForce(new Vector2(0, g).multiply(mass));
+		ApplyDrag();
+		velocity.add(force.multiply((float)Kwlick.DeltaTime).multiply(1/mass));
+>>>>>>> 2b5bcef68b9d05979186709fae492fc69dd7345c
 		entity.transform.position.add(velocity);
 	}
 }

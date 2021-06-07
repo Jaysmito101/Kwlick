@@ -105,6 +105,7 @@ public class Vector2{
 	public String toString(){
 		return "{" + x + ", " + y + "}";
 	}
+<<<<<<< HEAD
 
 	public static Coordinate toWorldCoordinates(int x, int y){
 		float w = (float)Kwlick.Width;
@@ -114,3 +115,6 @@ public class Vector2{
 } 
 
 		
+=======
+} 
+>>>>>>> 2b5bcef68b9d05979186709fae492fc69dd7345c
