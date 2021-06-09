@@ -9,11 +9,14 @@ import java.awt.*;
 
 import com.jaysmito.Kwlick.utils.*;
 import com.jaysmito.Kwlick.primitives.*;
+import com.jaysmito.Kwlick.particles.*;
 
 public class Kwlick{
 	private Kwlick(){}
 
 	public static Camera Camera = null;
+
+	public static ParticleSystem ParticleSystem = new ParticleSystem();
 
 	public static boolean ANTI_ALIASING = false;
 

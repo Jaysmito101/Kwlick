@@ -5,7 +5,9 @@ import com.jaysmito.Kwlick.Kwlick;
 import com.jaysmito.Kwlick.utils.*;
 
 public class ForceResolver implements PhysicsResolver{
-	public Vector2 force;
+	
+	private Vector2 force;
+
 	public Vector2 velocity;
 	public float g;
 	public float mass;
@@ -26,13 +28,11 @@ public class ForceResolver implements PhysicsResolver{
 		this.force.add(force);
 	}
 
-<<<<<<< HEAD
 	public void SetForce(Vector2 force){
 		this.force.x = force.x;
 		this.force.y = force.y;
 	}
-=======
->>>>>>> 2b5bcef68b9d05979186709fae492fc69dd7345c
+
 	public void Halt(){
 		this.velocity.zero();
 	}
@@ -41,7 +41,7 @@ public class ForceResolver implements PhysicsResolver{
 		this.force.zero();
 	}
 
-	public void ApplyDrag(){
+	private void ApplyDrag(){
 		if(velocity.x < 0){
 			velocity.x += drag * (float)Kwlick.DeltaTime;
 		}else{
@@ -52,31 +52,15 @@ public class ForceResolver implements PhysicsResolver{
 		}else{
 			velocity.y -= drag * (float)Kwlick.DeltaTime;
 		}
-		if(force.x < 0){
-			force.x += drag * (float)Kwlick.DeltaTime;
-		}else{
-			force.x -= drag * (float)Kwlick.DeltaTime;
-		}
-		if(force.x < 0){
-			force.x += drag * (float)Kwlick.DeltaTime;
-		}else{
-			force.x -= drag * (float)Kwlick.DeltaTime;
-		}
 	}
 
 	@Override
 	public void Resolve(Entity entity){
-<<<<<<< HEAD
-		ApplyDrag();
 		velocity.add(force.multiply((float)Kwlick.DeltaTime).multiply(1/mass));
 		if(isGravityActive)
-			velocity.add(new Vector2(0, g* Kwlick.DeltaTime)); // For gravity
-=======
-		if(isGravityActive)
-			AddForce(new Vector2(0, g).multiply(mass));
+			velocity.add(new Vector2(0, g*(float)Kwlick.DeltaTime)); // For gravity
 		ApplyDrag();
-		velocity.add(force.multiply((float)Kwlick.DeltaTime).multiply(1/mass));
->>>>>>> 2b5bcef68b9d05979186709fae492fc69dd7345c
+		ClearForces();
 		entity.transform.position.add(velocity);
 	}
 }

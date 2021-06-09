@@ -59,6 +59,7 @@ public abstract class Application implements Runnable{
 	public void OnMouseButtonReleased(int button, int x, int y){}
 	public void OnMouseButtonReleased(int button){}
 	public void OnMouseButtonClicked(int button){}
+	public void OnMouseButtonClicked(int button, int x, int y){}
 	public void OnMouseEnter(int x, int y){}
 	public void OnMouseExit(int x, int y){}
 	public void OnMouseDragged(int x, int y){}

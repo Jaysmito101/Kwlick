@@ -22,7 +22,9 @@ public class SimplePolygon extends Entity{
 	}
 
 	public void AddVertex(float x, float y){
-		points.add(new Point(x, y));
+		synchronized(points){
+			points.add(new Point(x, y));
+		}
 	}
 
 	public void EmptyVertices(){
@@ -30,13 +32,15 @@ public class SimplePolygon extends Entity{
 	}
 
 	private int[][] PreparePoints(Coordinate cameraCoord){
-		int[][] pointsArr = new int[2][points.size()];
-		for(int i=0;i<points.size();i++){
-			// Kind of what you would do in vertex shader can be done here(Kind of ... )
-			pointsArr[0][i] = (int)points.get(i).x + cameraCoord.x; 
-			pointsArr[1][i] = (int)points.get(i).y + cameraCoord.y; 
+		synchronized(points){
+			int[][] pointsArr = new int[2][points.size()];
+			for(int i=0;i<points.size();i++){
+				// Kind of what you would do in vertex shader can be done here(Kind of ... )
+				pointsArr[0][i] = (int)points.get(i).x + cameraCoord.x; 
+				pointsArr[1][i] = (int)points.get(i).y + cameraCoord.y; 
+			}
+			return pointsArr;
 		}
-		return pointsArr;
 	}
 
 	@Override

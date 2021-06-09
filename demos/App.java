@@ -9,6 +9,7 @@ import com.jaysmito.Kwlick.utils.*;
 import com.jaysmito.Kwlick.primitives.*;
 import com.jaysmito.Kwlick.resolvers.*;
 import com.jaysmito.Kwlick.uiprimitives.*;
+import com.jaysmito.Kwlick.particles.*;
 import com.jaysmito.Kwlick.*;
 
 public class App{
@@ -48,26 +49,71 @@ public class App{
 				Kwlick.LaunchApp();
 				break;
 			}
+			case "adv-particles":{
+				Kwlick.LoadScene(new AdvancsdParticleSystemDemo());
+				Kwlick.LaunchApp();
+				break;
+			}
 		}
+	}
+}
+
+class AdvancsdParticleSystemDemo extends Application{
+	public void Start(){
+		setTitle("Advanced Particle System Demo [Jaysmito Mukherjee]");
+		Kwlick.ParticleSystem.spread= 200;
+		Kwlick.ParticleSystem.maxSize= 10;
+		Kwlick.ParticleSystem.approxNumParticles = 500;
+		Kwlick.ParticleSystem.isOnePointStart = true;
+		Kwlick.ANTI_ALIASING = true;
+	}
+
+	@Override
+	public void OnMouseButtonClicked(int button, int x, int y){
+		int xx = Vector2.toWorldCoordinates(x, y).x;
+		int yy = Vector2.toWorldCoordinates(x, y).y;
+		ParticleCluster pc = Kwlick.ParticleSystem.generate();
+		pc.transform.position.x = xx;
+		pc.transform.position.y = yy;
+		Kwlick.Log("Created new Particle System in World Coordinates("+ xx +", "+ yy +")");
 	}
 }
 
 class PolygonDemo extends Application{
 	SimplePolygon p;
+	Text t1;
 	public void Start(){
 		setTitle("Basic Polygon Demo [Jaysmito Mukherjee]");
 		p = new SimplePolygon();
 		p.name = "MyPolygon";
-		p.AddVertex(-100, -200);
-		p.AddVertex(-80, 50);
-		p.AddVertex(-200, 150);
-		p.AddVertex(-170, 150);
-		p.AddVertex(70, 200);
-		p.AddVertex(200, 163);
-		p.AddVertex(135, -1);
-		p.AddVertex(23, -98);
+		p.fill = false;
+		t1 = new Text("Geneerate new Polygon");
+		t1.fontSize = 16;
+		t1.padding = 10;
+		t1.backgroundColor = new Color(225, 255, 0);
+		t1.addClickListener(new ClickListener(){
+			@Override
+			public void OnClick(ClickEvent e){
+				Kwlick.DestroyEntity(p.name); // No need to worry as if this is not added this does nothing!
+				int numVert = (int)(Math.random()*20)+3;
+				p.EmptyVertices();
+				for(int i=0;i<numVert;i++){
+					int x = (int)(Math.random()*600)-300;
+					int y = (int)(Math.random()*600)-300;
+					p.AddVertex(x, y);
+				}
+				p.name = "" + Math.random();
+				Kwlick.AddEntity(p);
+
+			}
+		});
 		Kwlick.ANTI_ALIASING = true;
-		Kwlick.AddEntity(p);
+		Kwlick.AddEntity(t1);
+	}
+
+	public void Update(double deltaTime){
+		t1.transform.position.x = -(Kwlick.Width/2) + 30;
+		t1.transform.position.y = (Kwlick.Height/2) - 30;
 	}
 }
 
@@ -140,7 +186,7 @@ class BasicForceDemo extends Application{
 			@Override
 			public void OnClick(ClickEvent e){
 				if(res.drag == 0){
-					res.drag = 10;					
+					res.drag = 2;					
 				}else{
 					res.drag = 0;					
 				}

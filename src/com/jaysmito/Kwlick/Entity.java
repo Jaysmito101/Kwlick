@@ -50,11 +50,11 @@ public abstract class Entity{
 	public void Render(Graphics2D g){}
 	public void AddProperty(){}
 
-	public void destory(){
+	public void destroy(){
 		GraphicsContext.Instance.destroy(name, 0);
 	}
 
-	public void destory(float delay){
+	public void destroy(float delay){
 		 GraphicsContext.Instance.destroy(name, delay);
 	}
 }

@@ -16,6 +16,7 @@ public class Circle extends Entity{
 	public boolean fill;
 
 	public Circle(float radius){
+		super();
 		this.fill = true;
 		this.radius = radius;
 	}

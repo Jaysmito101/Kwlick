@@ -65,6 +65,7 @@ public  class GraphicsContext extends JPanel{
 			@Override
 			public void mouseClicked(MouseEvent e){
 				checkUIClicks(e.getX(), e.getY());
+				MainWindow.App.OnMouseButtonClicked(e.getButton(), e.getX(), e.getY());
 				MainWindow.App.OnMouseButtonClicked(e.getButton());
 			}
 
@@ -118,7 +119,7 @@ public  class GraphicsContext extends JPanel{
 		entitiesToDestroy.put(entity, delay);
 	}
 
-	protected synchronized void addEntity(Entity entity){
+	protected synchronized void addEntity(Entity entity){		
 		entities.put(entity.name+"", entity);
 	}
 
@@ -131,14 +132,20 @@ public  class GraphicsContext extends JPanel{
 	}
 
 	private void checkUIClicks(int x, int y){
+		HashMap<String, Entity> entitiesCopy = null;
 		synchronized(entities){
-			for(Entity entity : entities.values()){
+			entitiesCopy = (HashMap<String, Entity>)entities.clone();
+		}
+		try{
+			for(Entity entity : entitiesCopy.values()){
 				if(entity.isUI){
 					if( ((UIEntity)entity).contains(x, y) ){
 						((UIEntity)entity).onClick(new ClickEvent());
 					}
 				}
 			}
+		}catch(Exception ex){
+			ex.printStackTrace();
 		}
 	}
 

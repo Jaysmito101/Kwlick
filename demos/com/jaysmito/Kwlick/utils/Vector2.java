@@ -35,6 +35,10 @@ public class Vector2{
 		return this;
 	}
 
+	public float dist(Vector2 other){
+		return (float)Math.sqrt( Math.pow( (this.x - other.x) , 2) + Math.pow( (this.y - other.y) , 2) );
+	}
+
 	public Vector2 add(Vector2 vector){
 		this.x += vector.x;
 		this.y += vector.y;
@@ -104,5 +108,11 @@ public class Vector2{
 	@Override
 	public String toString(){
 		return "{" + x + ", " + y + "}";
+	}
+
+	public static Coordinate toWorldCoordinates(int x, int y){
+		float w = (float)Kwlick.Width;
+		float h = (float)Kwlick.Height;
+		return new Coordinate((int)(x - w/2), (int)(-1 * (y - h/2)));
 	}
 } 
