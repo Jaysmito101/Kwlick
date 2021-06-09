@@ -7,8 +7,7 @@ import java.io.*;
 import java.net.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.*;
 
 import com.jaysmito.Kwlick.utils.*;
 import com.jaysmito.Kwlick.primitives.*;
@@ -25,9 +24,9 @@ public  class GraphicsContext extends JPanel{
 
 	private Camera camera;
 
-	private HashMap<String, Entity> entities;
+	private ConcurrentHashMap<String, Entity> entities;
 
-	private HashMap<String, Float> entitiesToDestroy;
+	private ConcurrentHashMap<String, Float> entitiesToDestroy;
 
 	private ArrayList<Layer> layers;
 
@@ -37,8 +36,8 @@ public  class GraphicsContext extends JPanel{
 		this.layers.add(new StandardEntityLayer(1));
 		this.camera = new Camera();
 		Kwlick.Camera = camera;
-		this.entities = new HashMap<String, Entity>();
-		this.entitiesToDestroy = new HashMap<String, Float>();
+		this.entities = new ConcurrentHashMap<String, Entity>();
+		this.entitiesToDestroy = new ConcurrentHashMap<String, Float>();
 		this.addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent e) {
 				for(Layer layer: layers){
@@ -132,9 +131,10 @@ public  class GraphicsContext extends JPanel{
 	}
 
 	private void checkUIClicks(int x, int y){
-		HashMap<String, Entity> entitiesCopy = null;
+		ConcurrentHashMap<String, Entity> entitiesCopy = null;
 		synchronized(entities){
-			entitiesCopy = (HashMap<String, Entity>)entities.clone();
+			//entitiesCopy = (ConcurrentHashMap<String, Entity>)entities.clone();
+			entitiesCopy = entities;
 		}
 		try{
 			for(Entity entity : entitiesCopy.values()){
