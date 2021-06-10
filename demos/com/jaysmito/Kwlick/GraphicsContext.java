@@ -12,6 +12,8 @@ import java.util.concurrent.*;
 import com.jaysmito.Kwlick.utils.*;
 import com.jaysmito.Kwlick.primitives.*;
 
+
+@SuppressWarnings("unchecked")
 public  class GraphicsContext extends JPanel{
 	public static GraphicsContext Instance;
 
@@ -51,19 +53,21 @@ public  class GraphicsContext extends JPanel{
 			@Override
 			public void mousePressed(MouseEvent e) {
 				requestFocus();
+				checkForMouseEvent(e.getX(), e.getY(), e.getButton(), MouseInputEvent.MouseInputEventType.BT_PRESS);
 				MainWindow.App.OnMouseButtonPressed(e.getButton(), e.getX(), e.getY());
 				MainWindow.App.OnMouseButtonPressed(e.getButton());
 			}
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
+				checkForMouseEvent(e.getX(), e.getY(), e.getButton(), MouseInputEvent.MouseInputEventType.BT_RELEASE);
 				MainWindow.App.OnMouseButtonReleased(e.getButton(), e.getX(), e.getY());
 				MainWindow.App.OnMouseButtonReleased(e.getButton());
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e){
-				checkUIClicks(e.getX(), e.getY());
+				checkForMouseEvent(e.getX(), e.getY(), e.getButton(), MouseInputEvent.MouseInputEventType.CLICK);
 				MainWindow.App.OnMouseButtonClicked(e.getButton(), e.getX(), e.getY());
 				MainWindow.App.OnMouseButtonClicked(e.getButton());
 			}
@@ -130,7 +134,7 @@ public  class GraphicsContext extends JPanel{
 		return entities.get(name);
 	}
 
-	private void checkUIClicks(int x, int y){
+	private void checkForMouseEvent(int x, int y, int button, MouseInputEvent.MouseInputEventType type){
 		ConcurrentHashMap<String, Entity> entitiesCopy = null;
 		synchronized(entities){
 			//entitiesCopy = (ConcurrentHashMap<String, Entity>)entities.clone();
@@ -138,9 +142,9 @@ public  class GraphicsContext extends JPanel{
 		}
 		try{
 			for(Entity entity : entitiesCopy.values()){
-				if(entity.isUI){
-					if( ((UIEntity)entity).contains(x, y) ){
-						((UIEntity)entity).onClick(new ClickEvent());
+				if(entity.isClickable){
+					if( (entity).contains(x, y) ){
+						(entity).onMouseInputEvent(new MouseInputEvent(x, y, button, type));
 					}
 				}
 			}

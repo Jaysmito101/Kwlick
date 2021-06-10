@@ -44,6 +44,12 @@ public class SimplePolygon extends Entity{
 	}
 
 	@Override
+	public boolean contains(int x, int y){
+		// As of now not implemented
+		return false;	
+	}
+
+	@Override
 	public void Render(Graphics2D g){
 		Resolve();
 		if(!(points.size()>0))

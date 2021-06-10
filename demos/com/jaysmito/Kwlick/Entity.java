@@ -12,11 +12,15 @@ import com.jaysmito.Kwlick.resolvers.*;
 import com.jaysmito.Kwlick.primitives.*;
 
 public abstract class Entity{
+
+	private ArrayList<MouseInputListener> listeners;
+
 	public Transform transform;
 	public Color color;
 	public String name;
 	public String tag;
 	public int layer;
+	public boolean isClickable;
 
 	public boolean isUI;
 
@@ -25,6 +29,7 @@ public abstract class Entity{
 	public Entity(){
 		this.color = new Color((int)(Math.random()*256), (int)(Math.random()*256), (int)(Math.random()*256));
 		this.transform = new Transform();
+		this.listeners = new ArrayList<MouseInputListener>();
 		this.layer = 1;
 		this.tag = "Entity";
 		this.isUI = false;
@@ -42,6 +47,50 @@ public abstract class Entity{
 	public void setPhysicsResolver(PhysicsResolver resolver){
 		this.physicsResolver = resolver;
 	}
+
+
+
+	public void addMouseListener(MouseInputListener listener){
+		listeners.add(listener);
+	}
+
+	public void onMouseInputEvent(MouseInputEvent e){
+		boolean flag = false;
+		for(MouseInputListener listener : listeners){
+			switch(e.type){
+				case CLICK:{
+					flag = listener.OnClick(e);
+					break;
+				}
+				case BT_RELEASE:{
+					flag = listener.OnMouseButtonReleased(e);
+					break;
+				}
+				case BT_PRESS:{
+					flag = listener.OnMouseButtonPressed(e);
+					break;
+				}
+				case ALL:{
+					flag = listener.OnMouseButtonPressed(e);
+					flag = listener.OnMouseButtonReleased(e);
+					flag = listener.OnClick(e);
+					break;
+				}
+				default:{
+					flag = true;
+					break;
+				}
+			}
+			if(flag)
+				break;
+		}
+	}
+
+	public boolean contains(int x, int y){
+		// This is not abstract here so incase not requied i will not have to implement this method in every entity like for the particle system
+		return false;
+	}
+
 	public void Resolve(){
 		if(physicsResolver != null)
 			physicsResolver.Resolve(this);

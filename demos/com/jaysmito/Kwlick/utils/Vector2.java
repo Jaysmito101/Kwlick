@@ -115,4 +115,10 @@ public class Vector2{
 		float h = (float)Kwlick.Height;
 		return new Coordinate((int)(x - w/2), (int)(-1 * (y - h/2)));
 	}
+
+	public static Vector2 toPositionVector(int x, int y){
+		float w = (float)Kwlick.Width;
+		float h = (float)Kwlick.Height;
+		return new Vector2((x - w/2), (-1 * (y - h/2)));
+	}
 } 

@@ -23,6 +23,21 @@ public class PlainRectangle extends Entity{
 	}
 
 	@Override
+	public boolean contains(int x, int y){
+		Coordinate cameraCoordinate = transform.position.toCameraCoordinates();
+		int w = (int)(width * transform.scale);
+		int h = (int)(height * transform.scale);
+		int x1 = cameraCoordinate.x- w/2;
+		int y1 = cameraCoordinate.y-h/2;
+		int x2 = x1 + width;
+		int y2 = y1 + height;
+		if(x > x1 && x < x2 && y > y1 && y < y2){
+			return true;
+		}
+		return false;	
+	}
+
+	@Override
 	public void Render(Graphics2D g){
 		Resolve();
 		g.setColor(color);

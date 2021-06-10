@@ -1,5 +1,3 @@
-import javax.swing.*;
-import javax.swing.event.*;
 import java.util.*;
 import java.io.*;
 import java.net.*;
@@ -91,9 +89,9 @@ class PolygonDemo extends Application{
 		t1.fontSize = 16;
 		t1.padding = 10;
 		t1.backgroundColor = new Color(225, 255, 0);
-		t1.addClickListener(new ClickListener(){
+		t1.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				Kwlick.DestroyEntity(p.name); // No need to worry as if this is not added this does nothing!
 				int numVert = (int)(Math.random()*20)+3;
 				p.EmptyVertices();
@@ -104,7 +102,7 @@ class PolygonDemo extends Application{
 				}
 				p.name = "" + Math.random();
 				Kwlick.AddEntity(p);
-
+				return true;
 			}
 		});
 		Kwlick.ANTI_ALIASING = true;
@@ -130,66 +128,74 @@ class BasicForceDemo extends Application{
 		c.setPhysicsResolver(res);
 		c.transform.position.y = 300;
 		t1=new Text("Reset Position");
-		t1.addClickListener(new ClickListener(){
+		t1.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				c.transform.position.x = 0;
 				c.transform.position.y = 0;
 				res.Halt();
 				res.ClearForces();
+				return true;
+
 			}
 		});
 		t1.fontSize = 16;
 		t1.padding = 10;
 		t1.backgroundColor = new Color(225, 255, 0);
 		t2 = t1.clone("Add Force Towards Left");
-		t2.addClickListener(new ClickListener(){
+		t2.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				res.AddForce(new Vector2(-100, 0));
+				return true;
 			}
 		});
 		t3 = t1.clone("Add Force Towards Right");
-		t3.addClickListener(new ClickListener(){
+		t3.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				res.AddForce(new Vector2(100, 0));
+				return true;
 			}
 		});
 		t4 = t1.clone("Add Force Towards Up");
-		t4.addClickListener(new ClickListener(){
+		t4.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				res.AddForce(new Vector2(0, 100));
+				return true;
 			}
 		});
 		t5 = t1.clone("Add Force Towards Down");
-		t5.addClickListener(new ClickListener(){
+		t5.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				res.AddForce(new Vector2(0, -100));
+				return true;
 			}
 		});
 		t6 = t1.clone("Activate Gravity");
-		t6.addClickListener(new ClickListener(){
+		t6.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				if(res.isGravityActive){
 					res.isGravityActive = false;					
 				}else{
 					res.isGravityActive = true;					
 				}
+				return true;
 			}
 		});
 		t7 = t1.clone("Activate Drag");
-		t7.addClickListener(new ClickListener(){
+		t7.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				if(res.drag == 0){
 					res.drag = 2;					
 				}else{
 					res.drag = 0;					
 				}
+				return true;
 			}
 		});
 		Kwlick.AddEntity(t1);
@@ -250,11 +256,12 @@ class BasicGravityDemo extends Application{
 		t.fontSize = 16;
 		t.padding = 10;
 		t.backgroundColor = new Color(225, 255, 0);
-		t.addClickListener(new ClickListener(){
+		t.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				c.transform.position.y = 300;
 				c.setPhysicsResolver(new GravityResolver());
+				return true;
 			}
 		});
 		Kwlick.AddEntity(t);
@@ -277,10 +284,11 @@ class BasicUIDemo extends Application{
 		text.color = Color.RED;
 		text.fontSize= 50;
 		text.padding = 20;
-		text.addClickListener(new ClickListener(){
+		text.addMouseListener(new MouseInputListener(){
 			@Override
-			public void OnClick(ClickEvent e){
+			public boolean OnClick(MouseInputEvent e){
 				Kwlick.Popup("You Clicked Me!");
+				return true;
 			}
 		});
 		Kwlick.AddEntity(text);
@@ -292,12 +300,19 @@ class BasicUIDemo extends Application{
 
 class BasicPlayerControlDemo extends Application{
 	float speed;
+	Circle c;
+	boolean isAc;
 	public void Start(){
 		Kwlick.ANTI_ALIASING = true;
+		isAc = false;
+		Kwlick.ParticleSystem.spread= 200;
+		Kwlick.ParticleSystem.maxSize= 10;
+		Kwlick.ParticleSystem.approxNumParticles = 20;
+		Kwlick.ParticleSystem.isOnePointStart = true;
 		//Kwlick.HideControlPanel();
 		setTitle("Basic Player Control Demo [Jaysmito Mukherjee]");
 		speed = 100;
-		Circle c = new Circle(100);
+		c = new Circle(100);
 		c.color = Color.RED;
 		c.name = "Player";
 		Kwlick.AddEntity(c);
@@ -309,6 +324,22 @@ class BasicPlayerControlDemo extends Application{
 		Entity e = Kwlick.FindEntity("Player");
 		e.transform.position.x += deltaTime*speedX*speed;
 		e.transform.position.y += deltaTime*speedY*speed;
+		if(!isAc && c!=null){
+			isAc = true;
+			ParticleCluster pc = Kwlick.ParticleSystem.generate();
+			pc.transform.position.x = c.transform.position.x;
+			pc.transform.position.y = c.transform.position.y;
+			// This is just for the demo in a proper game delay with theads like this is a bad practice
+			new Thread(new Runnable(){
+				@Override
+				public void run(){
+					try{
+						Thread.sleep(500);
+					}catch(Exception ex){}
+					isAc = false;
+				}
+			}).start();
+		}
 	}
 }
 
