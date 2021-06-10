@@ -57,23 +57,35 @@ public class App{
 }
 
 class AdvancsdParticleSystemDemo extends Application{
+	Text t1;
 	public void Start(){
 		setTitle("Advanced Particle System Demo [Jaysmito Mukherjee]");
-		Kwlick.ParticleSystem.spread= 200;
-		Kwlick.ParticleSystem.maxSize= 10;
-		Kwlick.ParticleSystem.approxNumParticles = 500;
+		Kwlick.ParticleSystem.spread= 100;
+		Kwlick.ParticleSystem.maxSize= 15;
+		Kwlick.ParticleSystem.approxSpeed= 200;
+		Kwlick.ParticleSystem.approxNumParticles = 50;
 		Kwlick.ParticleSystem.isOnePointStart = true;
+		t1 = new Text("Click and drag your mouse!");
+		t1.fontSize = 16;
+		t1.padding = 10;
+		t1.backgroundColor = new Color(225, 255, 0);
+		Kwlick.AddEntity(t1);
 		Kwlick.ANTI_ALIASING = true;
 	}
 
+	public void Update(){
+		t1.transform.position.x = -(Kwlick.Width/2) + 30;
+		t1.transform.position.y = (Kwlick.Height/2) - 30;
+	}
+
 	@Override
-	public void OnMouseButtonClicked(int button, int x, int y){
+	public void OnMouseDragged(int x, int y){
 		int xx = Vector2.toWorldCoordinates(x, y).x;
 		int yy = Vector2.toWorldCoordinates(x, y).y;
 		ParticleCluster pc = Kwlick.ParticleSystem.generate();
 		pc.transform.position.x = xx;
 		pc.transform.position.y = yy;
-		Kwlick.Log("Created new Particle System in World Coordinates("+ xx +", "+ yy +")");
+		//Kwlick.Log("Created new Particle System in World Coordinates("+ xx +", "+ yy +")");
 	}
 }
 

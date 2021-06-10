@@ -164,15 +164,13 @@ public  class GraphicsContext extends JPanel{
 				if(entitiesToDestroy.get(pair.getKey().toString()) < 0){
 					tmp.add(pair.getKey().toString());
 				}
-			}catch(Exception ex){}
-		}
-		synchronized(entities){
-			synchronized(entitiesToDestroy){
-				for(String entity:tmp){
-					entities.remove(entity);
-					entitiesToDestroy.remove(entity);
-				}
+			}catch(Exception ex){
+				ex.printStackTrace();
 			}
+		}
+		for(String entity:tmp){
+			entities.remove(entity);
+			entitiesToDestroy.remove(entity);
 		}
 	}
 
@@ -209,7 +207,8 @@ public  class GraphicsContext extends JPanel{
 					try{
 						layers.get(entity.layer).Render(entity);
 					}catch(Exception ex){
-				// Invalid Layer Id set in Intity will not be rendered
+						// Invalid Layer Id set in Intity will not be rendered
+						ex.printStackTrace();
 					}
 				}
 				for(int i=layers.size()-1 ; i >= 0 ; i--){
