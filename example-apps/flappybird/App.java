@@ -14,24 +14,15 @@ import com.jaysmito.Kwlick.*;
 
 public class App{
 	public static void main(String[] args) {
-		Kwlick.LoadScene(new FlappyScene());
+		Kwlick.LoadScene(new Flappy());
 		Kwlick.LaunchApp();
 	}
 }
 
-class FlappyScene extends Application{
-	Circle player;
+class Flappy extends Application{
 	public void Start(){
-		setTitle("Flappy Bird -Made with Kwlick [Jaysmito Mukherjee]");
-		// Setup particle system for effects
-		Kwlick.ParticleSystem.spread= 200;
-		Kwlick.ParticleSystem.maxSize= 10;
-		Kwlick.ParticleSystem.approxNumParticles = 500;
-		Kwlick.ParticleSystem.isOnePointStart = true;
+		setTitle("SimplyFlappy - Made with Kwlick [Jaysmito Mukherjee]");
+		// Yet to be made
 		Kwlick.ANTI_ALIASING = true;
-	}
-
-	public void ResetGame(){
-		
 	}
 }
