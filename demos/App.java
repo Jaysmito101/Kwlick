@@ -52,7 +52,85 @@ public class App{
 				Kwlick.LaunchApp();
 				break;
 			}
+			case "sprite-demo":{
+				Kwlick.LoadScene(new SpriteDemo());
+				Kwlick.LaunchApp();
+				break;
+			}
+			case "animated-sprite-demo":{
+				Kwlick.LoadScene(new AnimatedSpriteDemo());
+				Kwlick.LaunchApp();
+				break;
+			}			
 		}
+	}
+}
+
+class AnimatedSpriteDemo extends Application{
+	AnimatedSprite sprite;
+	Text t1, t2;
+	public void Start(){
+		Kwlick.HideControlPanel();
+		setTitle("Animated Sprite System Demo [Jaysmito Mukherjee]");
+		sprite = new AnimatedSprite();
+		Kwlick.AddEntity(sprite);
+
+		t1 = new Text("Play Animation 1");
+		t1.fontSize = 16;
+		t1.padding = 10;
+		t1.backgroundColor = new Color(225, 255, 0);
+		t1.addMouseListener(new MouseInputListener(){
+			@Override
+			public boolean OnClick(MouseInputEvent e){
+				LoadAnim(1);
+				return true;
+			}
+		});
+
+		Kwlick.AddEntity(t1);
+
+
+		t2 = new Text("Play Animation 2");
+		t2.fontSize = 16;
+		t2.padding = 10;
+		t2.backgroundColor = new Color(225, 255, 0);
+		t2.addMouseListener(new MouseInputListener(){
+			@Override
+			public boolean OnClick(MouseInputEvent e){
+				LoadAnim(2);
+				return true;
+			}
+		});
+
+		Kwlick.AddEntity(t2);
+	}
+
+	public void LoadAnim(int num){
+		Texture[] t= Texture.FromFolder("res/AnimatedSpriteDemo/" + num);
+		for(int i=0;i<t.length;i++){
+			t[i].resize(400, 400);
+		}
+		sprite.setTextures(t);
+		sprite.animDelay = 70;
+	}
+
+	public void Update(double deltaTime){
+
+		t1.transform.position.x = -(Kwlick.Width/2) + 30;
+		t1.transform.position.y = (Kwlick.Height/2) - 30;
+
+		t2.transform.position.x = -(Kwlick.Width/2) + 30;
+		t2.transform.position.y = (Kwlick.Height/2) - 30 - 60;
+	}
+}
+
+class SpriteDemo extends Application{
+	public void Start(){
+		setTitle("Sprite System Demo [Jaysmito Mukherjee]");
+		Texture t = Texture.FromFile("res/sample-sprite.png");
+		t.resize(100, 100);
+		Sprite sprite = new Sprite(t);
+		Kwlick.AddEntity(sprite);
 	}
 }
 

@@ -71,6 +71,12 @@ public abstract class Application implements Runnable{
 		long prevTime = System.nanoTime();
 		long currTime = prevTime+1;
 		while(isAlive){
+			while(!MainWindow.isLaunched){
+				try{
+					Thread.sleep(delay);
+				}
+				catch(Exception ex){}
+			}
 			currTime = System.nanoTime();
 			double deltaTime = (currTime - prevTime)/1000000000.0;
 			FPS = (float)(1/deltaTime);

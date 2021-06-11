@@ -13,6 +13,8 @@ import com.jaysmito.Kwlick.primitives.*;
 
 public class MainWindow extends JFrame{
 
+	public static boolean isLaunched;
+
 	public static MainWindow Instance;
 
 	public static Application App;
@@ -41,7 +43,6 @@ public class MainWindow extends JFrame{
 			}
 			App = app;
 			Instance = new MainWindow(app.title);
-			MainWindow.App.Start();
 			setUpApplication();
 		}
 		return Instance;
@@ -106,6 +107,8 @@ public class MainWindow extends JFrame{
 	public void launch(){
 		setVisible(true);
 		context.requestFocus();
+		MainWindow.App.Start();
+		isLaunched = true;
 		ControlPanel.Log("Launched Window.");
 	}
 }
