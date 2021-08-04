@@ -1,6 +1,7 @@
 # Kwlick
 A Java Sing Based(CPU only) Game Engine (The main purpose is to create small demonstrations with very less code)
 
+![Kwlick Logo](https://raw.githubusercontent.com/Jaysmito101/Kwlick/b832e54e8840da73094feb30c4cb7a6bf80c054b/Branding/logo_medium.svg)
 
 ## Getting Started
 
