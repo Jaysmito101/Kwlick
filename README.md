@@ -7,6 +7,8 @@ A Java Sing Based(CPU only) Game Engine (The main purpose is to create small dem
 
 The main purpose of this engine is to make simple games or animations very very easily.
 
+Please visit the wiki section for documentation!
+
 So, for getting started lets make a particle boom.
 Though it sounds comples but is very very easy here.
 Here is what the result looks like 👎
